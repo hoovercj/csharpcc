@@ -118,7 +118,7 @@ ${SUPPORT_CLASS_VISIBILITY_PUBLIC?public :}class SimpleCharStream
     try {
       if ((i = inputStream.Read(buffer, maxNextCharInd, available - maxNextCharInd)) == -1)
       {
-        inputStream.Close();
+        inputStream.Dispose();
         throw new System.IO.IOException();
       }
       else

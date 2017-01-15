@@ -1,7 +1,4 @@
-﻿using System;
-
-[Serializable]
-${SUPPORT_CLASS_VISIBILITY_PUBLIC?public :}class TokenManagerError : System.InvalidOperationException {
+﻿${SUPPORT_CLASS_VISIBILITY_PUBLIC?public :}class TokenManagerError : System.InvalidOperationException {
 	public TokenManagerError() {
 	}
 

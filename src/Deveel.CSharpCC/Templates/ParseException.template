@@ -9,7 +9,6 @@
 /// so long as retaining the public fields.
 /// </para>
 /// </remarks>
-[System.Serializable]
 ${SUPPORT_CLASS_VISIBILITY_PUBLIC?public :} class ParseException : System.Exception {
 	/// <summary>
 	/// This constructor is used by the method <c>GenerateParseException</c> in 

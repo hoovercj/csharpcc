@@ -1795,41 +1795,48 @@ namespace Deveel.CSharpCC.Parser {
                 DumpCompositeStatesAsciiMoves(ostr, entry.Key, byteNum, dumped);
 
             for (int i = 0; i < allStates.Count; i++) {
-                NfaState temp = allStates[i];
+                try
+                {
+                    NfaState temp = allStates[i];
 
-                if (dumped[temp.stateName] || temp.lexState != LexGen.lexStateIndex ||
-                    !temp.HasTransitions() || temp.dummy ||
-                    temp.stateName == -1)
-                    continue;
-
-                String toPrint = "";
-
-                if (temp.stateForCase != null) {
-                    if (temp.inNextOf == 1)
+                    if (dumped[temp.stateName] || temp.lexState != LexGen.lexStateIndex ||
+                        !temp.HasTransitions() || temp.dummy ||
+                        temp.stateName == -1)
                         continue;
 
-                    if (dumped[temp.stateForCase.stateName])
-                        continue;
+                    String toPrint = "";
 
-                    toPrint = (temp.stateForCase.PrintNoBreak(ostr, byteNum, dumped));
+                    if (temp.stateForCase != null) {
+                        if (temp.inNextOf == 1)
+                            continue;
 
-                    if (temp.asciiMoves[byteNum] == 0L) {
-                        if (toPrint.Equals(""))
-                            ostr.WriteLine("                  break;");
+                        if (dumped[temp.stateForCase.stateName])
+                            continue;
 
-                        continue;
+                        toPrint = (temp.stateForCase.PrintNoBreak(ostr, byteNum, dumped));
+
+                        if (temp.asciiMoves[byteNum] == 0L) {
+                            if (toPrint.Equals(""))
+                                ostr.WriteLine("                  break;");
+
+                            continue;
+                        }
                     }
+
+                    if (temp.asciiMoves[byteNum] == 0L)
+                        continue;
+
+                    if (!toPrint.Equals(""))
+                        ostr.Write(toPrint);
+
+                    dumped[temp.stateName] = true;
+                    ostr.WriteLine("               case " + temp.stateName + ":");
+                    temp.DumpAsciiMove(ostr, byteNum, dumped);
                 }
-
-                if (temp.asciiMoves[byteNum] == 0L)
+                catch (IndexOutOfRangeException)
+                {
                     continue;
-
-                if (!toPrint.Equals(""))
-                    ostr.Write(toPrint);
-
-                dumped[temp.stateName] = true;
-                ostr.WriteLine("               case " + temp.stateName + ":");
-                temp.DumpAsciiMove(ostr, byteNum, dumped);
+                }
             }
 
             ostr.WriteLine("               default : break;");

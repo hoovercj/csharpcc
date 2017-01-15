@@ -111,7 +111,7 @@ namespace Deveel.CSharpCC.Parser {
 				IList<NonTerminal> parents = ((NormalProduction) exp.Parent).Parents;
 				IList<MatchInfo> retval = new List<MatchInfo>();
 				//System.out.println("1; gen: " + generation + "; exp: " + exp);
-				for (int i = 0; i < parents.Count; i++) {
+				for (int i = 0; i < parents?.Count; i++) {
 					IList<MatchInfo> v = genFollowSet(partialMatches, parents[i], generation);
 					listAppend(retval, v);
 				}
